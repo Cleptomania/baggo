@@ -1,0 +1,25 @@
+[project]
+name = "baggo"
+version = "1.0.0"
+description = "It's like a bag of holding for your roguelike tools"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+  "arcade"
+]
+
+[dependency-groups]
+dev = [
+  "ruff"
+]
+
+[tool.uv.sources]
+arcade = { git = "https://github.com/pythonarcade/arcade", branch = "development" }
+
+[build-system]
+requires = ["uv_build"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "baggo"
+module-root = ""
