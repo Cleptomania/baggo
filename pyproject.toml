@@ -4,9 +4,25 @@ version = "0.1.0"
 description = "It's like a bag of holding for your roguelike tools"
 readme = "README.md"
 requires-python = ">=3.14"
+authors = [{ name = "Darren Eberly", email="darren.eberly@proton.me" }]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.14",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Topic :: Software Development :: Libraries :: Python Modules"
+]
 dependencies = [
   "arcade"
 ]
+
+[project.urls]
+Homepage = "https://github.com/Cleptomania/baggo"
+Source = "https://github.com/Cleptomania/baggo"
+Issues = "https://github.com/Cleptomania/baggo/issues"
 
 [dependency-groups]
 dev = [
