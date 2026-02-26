@@ -21,6 +21,9 @@ jobs:
           python-version: "3.14"
           enable-cache: true
 
+      - name: Setup Project
+        run: uv sync
+
       - name: Ruff
         run: uv run ruff check
 
