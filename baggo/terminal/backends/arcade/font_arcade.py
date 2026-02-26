@@ -5,8 +5,8 @@ from arcade.gl import Texture2D
 
 from baggo.terminal import Font
 
-class FontArcade(Font):
 
+class FontArcade(Font):
     _initialized: bool = False
     _image_path: Path
 

@@ -4,6 +4,7 @@ from typing import Protocol
 
 from baggo import colors, Color
 
+
 @dataclass
 class Tile:
     glyph: int
@@ -12,7 +13,6 @@ class Tile:
 
 
 class Console(Protocol):
-
     width: int
     height: int
 
@@ -27,9 +27,23 @@ class Console(Protocol):
         raise NotImplementedError
 
     @abstractmethod
-    def print(self, x: int, y: int, text: str, foreground: Color | None = None, background: Color | None = None) -> None:
+    def print(
+        self,
+        x: int,
+        y: int,
+        text: str,
+        foreground: Color | None = None,
+        background: Color | None = None,
+    ) -> None:
         raise NotImplementedError
 
     @abstractmethod
-    def set(self, x: int, y: int, glyph: int, foreground: Color, background: Color | None = None) -> None:
+    def set(
+        self,
+        x: int,
+        y: int,
+        glyph: int,
+        foreground: Color,
+        background: Color | None = None,
+    ) -> None:
         raise NotImplementedError

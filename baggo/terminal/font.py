@@ -2,8 +2,8 @@ from abc import abstractmethod
 from pathlib import Path
 from typing import Protocol
 
-class Font(Protocol):
 
+class Font(Protocol):
     _width: int
     _height: int
 

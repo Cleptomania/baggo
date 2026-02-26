@@ -6,6 +6,7 @@ from .console import Console
 if TYPE_CHECKING:
     from baggo import App
 
+
 class Terminal(Protocol):
     _app: App
     _width: int
@@ -22,7 +23,7 @@ class Terminal(Protocol):
         raise NotImplementedError
 
     @property
-    def app(self) ->Any:
+    def app(self) -> Any:
         return self._app
 
     @app.setter
@@ -44,4 +45,3 @@ class Terminal(Protocol):
     @height.setter
     def height(self, value: int) -> None:
         raise RuntimeError("Changing the size of a Terminal is not supported")
-

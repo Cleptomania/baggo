@@ -2,8 +2,8 @@ from .console import Console, Tile
 
 from baggo import Color, colors, to_cp437
 
-class SimpleConsole(Console):
 
+class SimpleConsole(Console):
     def __init__(self, width: int, height: int):
         self.width = width
         self.height = height
@@ -25,7 +25,14 @@ class SimpleConsole(Console):
 
         self.dirty = True
 
-    def print(self, x: int, y: int, text: str, foreground: Color = colors.WHITE, background: Color = colors.BLACK) -> None:
+    def print(
+        self,
+        x: int,
+        y: int,
+        text: str,
+        foreground: Color = colors.WHITE,
+        background: Color = colors.BLACK,
+    ) -> None:
         changed = False
         for char in text:
             cp = to_cp437(char)
@@ -40,8 +47,14 @@ class SimpleConsole(Console):
         if changed:
             self.dirty = True
 
-
-    def set(self, x: int, y: int, glyph: int, foreground: Color = colors.WHITE, background: Color = colors.BLACK) -> None:
+    def set(
+        self,
+        x: int,
+        y: int,
+        glyph: int,
+        foreground: Color = colors.WHITE,
+        background: Color = colors.BLACK,
+    ) -> None:
         index = self.try_index(x, y)
         if index is not None:
             self.tiles[index].glyph = glyph

@@ -73,8 +73,9 @@ void main() {
     fragColor = mix(v_bg_color, v_fg_color, mask);
 }
 """
-class TerminalWindow(arcade.Window):
 
+
+class TerminalWindow(arcade.Window):
     def __init__(self, width: int, height: int, title: str, terminal: TerminalArcade):
         super().__init__(width, height, title)
         self.terminal = terminal
@@ -91,11 +92,13 @@ class TerminalWindow(arcade.Window):
     def on_key_release(self, symbol: int, modifiers: int) -> EVENT_HANDLE_STATE:
         self.terminal.app.on_key_up(Keys(symbol), modifiers)
 
-class TerminalArcade(Terminal):
 
+class TerminalArcade(Terminal):
     _font: FontArcade
 
-    def __init__(self, width: int, height: int, title: str, console: Console, font: FontArcade):
+    def __init__(
+        self, width: int, height: int, title: str, console: Console, font: FontArcade
+    ):
         self._width = width
         self._height = height
         self.console = console
@@ -108,49 +111,73 @@ class TerminalArcade(Terminal):
             self._font.load()
 
         self.glyph_program = self.ctx.program(
-            vertex_shader=VERTEX_SHADER,
-            fragment_shader=FRAGMENT_SHADER
+            vertex_shader=VERTEX_SHADER, fragment_shader=FRAGMENT_SHADER
         )
 
         # Quad vertices
         # Format: x, y, u, v
-        vertices = array.array('f', [
-            0.0, 0.0, 0.0, 1.0,  # Bottom-left
-            1.0, 0.0, 1.0, 1.0,  # Bottom-right
-            0.0, 1.0, 0.0, 0.0,  # Top-left
-            1.0, 0.0, 1.0, 1.0,  # Bottom-right
-            1.0, 1.0, 1.0, 0.0,  # Top-right
-            0.0, 1.0, 0.0, 0.0,  # Top-left
-        ])
+        vertices = array.array(
+            "f",
+            [
+                0.0,
+                0.0,
+                0.0,
+                1.0,  # Bottom-left
+                1.0,
+                0.0,
+                1.0,
+                1.0,  # Bottom-right
+                0.0,
+                1.0,
+                0.0,
+                0.0,  # Top-left
+                1.0,
+                0.0,
+                1.0,
+                1.0,  # Bottom-right
+                1.0,
+                1.0,
+                1.0,
+                0.0,  # Top-right
+                0.0,
+                1.0,
+                0.0,
+                0.0,  # Top-left
+            ],
+        )
 
         self.quad_buffer = self.ctx.buffer(data=vertices)
 
         # Create instance buffer (will be updated each frame)
         # Format per instance: x, y, tex_offset_x, tex_offset_y, fg_r, fg_g, fg_b, fg_a, bg_r, bg_g, bg_b, bg_a
         max_instances = self.console.width * self.console.height
-        self.instance_buffer = self.ctx.buffer(reserve=max_instances * 12 * 4)  # 12 floats per instance
+        self.instance_buffer = self.ctx.buffer(
+            reserve=max_instances * 12 * 4
+        )  # 12 floats per instance
 
         # Create geometry
         self.geometry = self.ctx.geometry(
             [
-                BufferDescription(
-                    self.quad_buffer,
-                    '2f 2f',
-                    ['in_vert', 'in_uv']
-                ),
+                BufferDescription(self.quad_buffer, "2f 2f", ["in_vert", "in_uv"]),
                 BufferDescription(
                     self.instance_buffer,
-                    '2f 2f 4f 4f',
-                    ['in_pos', 'in_tex_offset', 'in_fg_color', 'in_bg_color'],
-                    instanced=True
-                )
+                    "2f 2f 4f 4f",
+                    ["in_pos", "in_tex_offset", "in_fg_color", "in_bg_color"],
+                    instanced=True,
+                ),
             ]
         )
 
         # Set uniforms
-        self.glyph_program['u_glyph_size'] = (self._font.tile_width, self._font.tile_height)
-        self.glyph_program['u_screen_size'] = (width, height)
-        self.glyph_program['u_glyph_uv_size'] = (1.0 / self._font.columns, 1.0 / self._font.rows)
+        self.glyph_program["u_glyph_size"] = (
+            self._font.tile_width,
+            self._font.tile_height,
+        )
+        self.glyph_program["u_screen_size"] = (width, height)
+        self.glyph_program["u_glyph_uv_size"] = (
+            1.0 / self._font.columns,
+            1.0 / self._font.rows,
+        )
 
         self.instance_count = 0
 
@@ -160,7 +187,7 @@ class TerminalArcade(Terminal):
         if self.instance_count > 0:
             # Bind font texture
             self._font.texture.use(0)
-            self.glyph_program['u_texture'] = 0
+            self.glyph_program["u_texture"] = 0
 
             # Draw all glyphs in one call
             self.geometry.render(self.glyph_program, instances=self.instance_count)
@@ -189,19 +216,37 @@ class TerminalArcade(Terminal):
                         glyph_y = 1.0 - ((glyph_row + 1) / self._font.rows)
 
                         # Colors (normalize to 0-1 range)
-                        fg_r, fg_g, fg_b = tile.foreground[0]/255.0, tile.foreground[1]/255.0, tile.foreground[2]/255.0
-                        bg_r, bg_g, bg_b = tile.background[0]/255.0, tile.background[1]/255.0, tile.background[2]/255.0
+                        fg_r, fg_g, fg_b = (
+                            tile.foreground[0] / 255.0,
+                            tile.foreground[1] / 255.0,
+                            tile.foreground[2] / 255.0,
+                        )
+                        bg_r, bg_g, bg_b = (
+                            tile.background[0] / 255.0,
+                            tile.background[1] / 255.0,
+                            tile.background[2] / 255.0,
+                        )
 
-                        instance_data.extend([
-                            px, py,                 # Position
-                            glyph_x, glyph_y,       # Texture offset
-                            fg_r, fg_g, fg_b, 1.0,  # Foreground color
-                            bg_r, bg_g, bg_b, 1.0   # Background color
-                        ])
+                        instance_data.extend(
+                            [
+                                px,
+                                py,  # Position
+                                glyph_x,
+                                glyph_y,  # Texture offset
+                                fg_r,
+                                fg_g,
+                                fg_b,
+                                1.0,  # Foreground color
+                                bg_r,
+                                bg_g,
+                                bg_b,
+                                1.0,  # Background color
+                            ]
+                        )
 
             # Update buffer
             if instance_data:
-                self.instance_buffer.write(array.array('f', instance_data))
+                self.instance_buffer.write(array.array("f", instance_data))
                 self.instance_count = len(instance_data) // 12
             else:
                 self.instance_count = 0

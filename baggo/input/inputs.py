@@ -1,4 +1,4 @@
-from enum import Enum, auto
+from enum import Enum
 from sys import platform
 
 
@@ -202,13 +202,13 @@ class Keys(Input):
     F = 102
     G = 103
     H = 104
-    I = 105
+    I = 105  # noqa: E741
     J = 106
     K = 107
     L = 108
     M = 109
     N = 110
-    O = 111
+    O = 111  # noqa: E741
     P = 112
     Q = 113
     R = 114

@@ -10,7 +10,7 @@ dependencies = [
 
 [dependency-groups]
 dev = [
-  "ruff"
+  "ruff",
 ]
 
 [tool.uv.sources]

@@ -1,8 +1,8 @@
 from baggo.terminal import Console, Terminal
 from baggo.input import Keys
 
-class App:
 
+class App:
     terminal: Terminal
     console: Console
 

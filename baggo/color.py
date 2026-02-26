@@ -146,7 +146,9 @@ class Color(RGBA255):
         return self.__class__(r=self.r, g=self.g, b=self.b, a=self.a)
 
     def __repr__(self) -> str:
-        return f"{self.__class__.__name__}(r={self.r}, g={self.g}, b={self.b}, a={self.a})"
+        return (
+            f"{self.__class__.__name__}(r={self.r}, g={self.g}, b={self.b}, a={self.a})"
+        )
 
     @property
     def r(self) -> int:
@@ -462,7 +464,10 @@ class Color(RGBA255):
             return cls(int(code[:2], 16), int(code[2:4], 16), int(code[4:6], 16), 255)
         elif len(code) == 8:
             return cls(
-                int(code[:2], 16), int(code[2:4], 16), int(code[4:6], 16), int(code[6:8], 16)
+                int(code[:2], 16),
+                int(code[2:4], 16),
+                int(code[4:6], 16),
+                int(code[6:8], 16),
             )
 
         raise ValueError(f"Improperly formatted color: '{code}'")

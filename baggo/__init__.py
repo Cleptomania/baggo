@@ -1,6 +1,7 @@
 from .color import Color
 from . import colors
 from . import csscolors
+from . import res
 
 from .cp437 import to_cp437
 
@@ -18,6 +19,7 @@ __all__ = [
     "App",
     "Keys",
     "to_cp437",
+    "res",
     "Terminal",
     "TerminalBuilder",
 ]
