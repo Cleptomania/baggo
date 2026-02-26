@@ -1,8 +1,9 @@
 import arcade
 import array
 from arcade.gl import BufferDescription
+from pyglet.event import EVENT_HANDLE_STATE
 
-from baggo import App
+from baggo import App, Keys
 from baggo.terminal import Console, Terminal
 
 from .font_arcade import FontArcade
@@ -83,6 +84,12 @@ class TerminalWindow(arcade.Window):
 
     def on_update(self, delta_time: float):
         self.terminal.on_update(delta_time)
+
+    def on_key_press(self, symbol: int, modifiers: int) -> EVENT_HANDLE_STATE:
+        self.terminal.app.on_key_down(Keys(symbol), modifiers)
+
+    def on_key_release(self, symbol: int, modifiers: int) -> EVENT_HANDLE_STATE:
+        self.terminal.app.on_key_up(Keys(symbol), modifiers)
 
 class TerminalArcade(Terminal):
 

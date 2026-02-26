@@ -24,6 +24,17 @@ class Sandbox(baggo.App):
         self.console.print(2, 0, "Hello, World!", baggo.colors.RED, baggo.colors.BLUE)
         self.console.set(self.player_x, self.player_y, baggo.to_cp437("@"), baggo.colors.YELLOW)
 
+    def on_key_down(self, key: baggo.Keys, modifiers: int) -> None:
+        match key:
+            case baggo.Keys.LEFT:
+                self.player_x -= 1
+            case baggo.Keys.RIGHT:
+                self.player_x += 1
+            case baggo.Keys.UP:
+                self.player_y -= 1
+            case baggo.Keys.DOWN:
+                self.player_y += 1
+
 
 def main():
     Sandbox().run()
