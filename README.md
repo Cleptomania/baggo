@@ -2,41 +2,31 @@
 
 There was a farmer who had a dog and baggo was his name-o. Except the farmer was a programmer, and the dog was a roguelike library.
 
-## What?
+## Features
 
-`uv run sandbox.py` to render a minimal rogue-like in
-[code page 437][]:
+1. A terminal like display and renderer for [code page 437](https://en.wikipedia.org/wiki/Code_page_437) fonts.
+2. Input Handling.
 
 ![A minimal roguelike screen from running sandbox.py](sandbox.png)
 
-[code page 437]: https://en.wikipedia.org/wiki/Code_page_437
+## Installation
 
-## Usage
+```shell
+pip install baggo
+```
 
-### Setup
+## Development
 
-[Install `uv`][install_uv] to get started.
+First make sure to [install uv](https://docs.astral.sh/uv/getting-started/installation/)
 
-If you do not already have Python 3.14 installed,
-`uv` will install it along with the dependencies:
+Assuming you have uv installed, run:
 
 ```shell
 uv sync
 ```
 
-This will install:
+You can now the basic sandbox example with:
 
-1. Python >= 3.14
-2. [Python Arcade's][arcade_dev] `development` branch
-3. The library
-
-[install_uv]: https://docs.astral.sh/uv/getting-started/installation/
-[arcade_dev]: https://github.com/pythonarcade/arcade
-
-### Running
-
-Run the example from earlier with:
-```
+```shell
 uv run sandbox.py
 ```
-

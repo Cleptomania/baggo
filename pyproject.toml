@@ -1,6 +1,6 @@
 [project]
 name = "baggo"
-version = "1.0.0"
+version = "0.1.0"
 description = "It's like a bag of holding for your roguelike tools"
 readme = "README.md"
 requires-python = ">=3.14"
