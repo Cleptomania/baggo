@@ -32,8 +32,10 @@ uniform vec2 u_glyph_size;   // Glyph size in pixels
 uniform vec2 u_screen_size;  // Screen size in pixels
 
 void main() {
-    // Calculate pixel position
-    vec2 pixel_pos = in_pos + in_vert * u_glyph_size;
+    // Calculate pixel position - extend height by 1 pixel to cover top row
+    vec2 glyph_size_adjusted = u_glyph_size;
+    glyph_size_adjusted.y += 1.0;
+    vec2 pixel_pos = in_pos + in_vert * glyph_size_adjusted;
 
     // Convert to normalized device coordinates (-1 to 1)
     vec2 ndc = (pixel_pos / u_screen_size) * 2.0 - 1.0;
