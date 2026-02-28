@@ -7,6 +7,8 @@ from .cp437 import to_cp437
 
 from .input import Keys
 
+from .terminal import Console
+from .terminal import SimpleConsole
 from .terminal import Terminal
 from .terminal import TerminalBuilder
 
@@ -20,6 +22,8 @@ __all__ = [
     "Keys",
     "to_cp437",
     "res",
+    "Console",
+    "SimpleConsole",
     "Terminal",
     "TerminalBuilder",
 ]

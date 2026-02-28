@@ -7,6 +7,7 @@ class SimpleConsole(Console):
     def __init__(self, width: int, height: int):
         self.width = width
         self.height = height
+        self.dirty = True
 
         num_tiles = width * height
         self.tiles = [Tile(0, colors.WHITE, colors.BLACK) for _ in range(num_tiles)]
