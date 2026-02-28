@@ -31,6 +31,7 @@ dependencies = [
 
 [package.dev-dependencies]
 dev = [
+    { name = "esper" },
     { name = "ruff" },
 ]
 
@@ -38,7 +39,19 @@ dev = [
 requires-dist = [{ name = "arcade", git = "https://github.com/pythonarcade/arcade?branch=development" }]
 
 [package.metadata.requires-dev]
-dev = [{ name = "ruff" }]
+dev = [
+    { name = "esper" },
+    { name = "ruff" },
+]
+
+[[package]]
+name = "esper"
+version = "3.7"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/ef/10/8aea39b9ebb97df3789ea5ca8ff4fcb72afacd8bfc99aa534f57a8eb565e/esper-3.7.tar.gz", hash = "sha256:b1cfb3204db8f4e738574b843e937edf59a1fa30f145ba3154c16d4b6cc4f664", size = 36552, upload-time = "2026-01-30T06:12:22.241Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/9b/74/270f02330f886d8d032b717ba75334584af3f247e824565ca35a1e25a369/esper-3.7-py3-none-any.whl", hash = "sha256:744c4621e8f51a628d81d88d2478415c84b6e41300e0efdbee4298a09fb4fbdb", size = 14008, upload-time = "2026-01-30T06:12:20.143Z" },
+]
 
 [[package]]
 name = "pillow"

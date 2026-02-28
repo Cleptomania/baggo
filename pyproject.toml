@@ -27,6 +27,7 @@ Issues = "https://github.com/Cleptomania/baggo/issues"
 [dependency-groups]
 dev = [
   "ruff",
+  "esper"
 ]
 
 [tool.uv.sources]
