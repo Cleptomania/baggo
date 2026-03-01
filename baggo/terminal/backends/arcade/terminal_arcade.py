@@ -150,12 +150,15 @@ class TerminalArcade(Terminal):
 
         self.quad_buffer = self.ctx.buffer(data=vertices)
 
-        # Create instance buffer (will be updated each frame)
+        # Create instance buffer
         # Format per instance: x, y, tex_offset_x, tex_offset_y, fg_r, fg_g, fg_b, fg_a, bg_r, bg_g, bg_b, bg_a
         max_instances = self.console.width * self.console.height
         self.instance_buffer = self.ctx.buffer(
             reserve=max_instances * 12 * 4
         )  # 12 floats per instance
+
+        # CPU-side copy of buffer data for efficient updates
+        self.instance_buffer_data = array.array("f", [0.0] * (max_instances * 12))
 
         # Create geometry
         self.geometry = self.ctx.geometry(
@@ -181,7 +184,8 @@ class TerminalArcade(Terminal):
             1.0 / self._font.rows,
         )
 
-        self.instance_count = 0
+        # Always render all tiles (even if not all are visible)
+        self.instance_count = self.console.width * self.console.height
 
     def on_draw(self):
         self.window.clear()
@@ -198,62 +202,58 @@ class TerminalArcade(Terminal):
         if self.app is not None:
             self.app.tick(delta_time)
 
-        if self.console.dirty:
-            # Build instance data
-            instance_data = []
+        for tile_index in self.console.dirty_tiles:
+            # Convert linear index back to x, y coordinates
+            x = tile_index % self.console.width
+            y = self.console.height - 1 - ((tile_index - x) // self.console.width)
 
-            for y in range(self.console.height):
-                for x in range(self.console.width):
-                    tile = self.console.at(x, y)
-                    if tile is not None:
-                        # Position
-                        px = x * self._font.tile_width
-                        py = y * self._font.tile_height
+            tile = self.console.at(x, y)
+            if tile is not None:
+                # Position
+                px = x * self._font.tile_width
+                py = y * self._font.tile_height
 
-                        # Texture offset - calculate based on glyph position in atlas
-                        glyph_col = tile.glyph % self._font.columns
-                        glyph_row = tile.glyph // self._font.columns
-                        glyph_x = glyph_col / self._font.columns
-                        # Flip Y - texture origin is bottom-left, atlas layout is top-left
-                        glyph_y = 1.0 - ((glyph_row + 1) / self._font.rows)
+                # Texture offset - calculate based on glyph position in atlas
+                glyph_col = tile.glyph % self._font.columns
+                glyph_row = tile.glyph // self._font.columns
+                glyph_x = glyph_col / self._font.columns
+                # Flip Y - texture origin is bottom-left, atlas layout is top-left
+                glyph_y = 1.0 - ((glyph_row + 1) / self._font.rows)
 
-                        # Colors (normalize to 0-1 range)
-                        fg_r, fg_g, fg_b = (
-                            tile.foreground[0] / 255.0,
-                            tile.foreground[1] / 255.0,
-                            tile.foreground[2] / 255.0,
-                        )
-                        bg_r, bg_g, bg_b = (
-                            tile.background[0] / 255.0,
-                            tile.background[1] / 255.0,
-                            tile.background[2] / 255.0,
-                        )
+                # Colors (normalize to 0-1 range)
+                fg_r, fg_g, fg_b = (
+                    tile.foreground[0] / 255.0,
+                    tile.foreground[1] / 255.0,
+                    tile.foreground[2] / 255.0,
+                )
+                bg_r, bg_g, bg_b = (
+                    tile.background[0] / 255.0,
+                    tile.background[1] / 255.0,
+                    tile.background[2] / 255.0,
+                )
 
-                        instance_data.extend(
-                            [
-                                px,
-                                py,  # Position
-                                glyph_x,
-                                glyph_y,  # Texture offset
-                                fg_r,
-                                fg_g,
-                                fg_b,
-                                1.0,  # Foreground color
-                                bg_r,
-                                bg_g,
-                                bg_b,
-                                1.0,  # Background color
-                            ]
-                        )
+                # Update buffer data at the correct offset (12 floats per instance)
+                offset = tile_index * 12
+                self.instance_buffer_data[offset : offset + 12] = array.array(
+                    "f",
+                    [
+                        px,
+                        py,  # Position
+                        glyph_x,
+                        glyph_y,  # Texture offset
+                        fg_r,
+                        fg_g,
+                        fg_b,
+                        1.0,  # Foreground color
+                        bg_r,
+                        bg_g,
+                        bg_b,
+                        1.0,  # Background color
+                    ],
+                )
 
-            # Update buffer
-            if instance_data:
-                self.instance_buffer.write(array.array("f", instance_data))
-                self.instance_count = len(instance_data) // 12
-            else:
-                self.instance_count = 0
-
-            self.console.dirty = False
+        self.instance_buffer.write(self.instance_buffer_data)
+        self.console.clear_dirty()
 
     def register_app(self, app: App):
         self._app = app

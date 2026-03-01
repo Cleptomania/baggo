@@ -8,9 +8,11 @@ class SimpleConsole(Console):
         self.width = width
         self.height = height
         self.dirty = True
+        self.dirty_tiles: set[int] = set()
 
         num_tiles = width * height
         self.tiles = [Tile(0, colors.WHITE, colors.BLACK) for _ in range(num_tiles)]
+        self.dirty_tiles = set(range(num_tiles))
 
     def at(self, x: int, y: int) -> Tile | None:
         index = self.try_index(x, y)
@@ -19,10 +21,11 @@ class SimpleConsole(Console):
         return None
 
     def clear(self, color: Color = colors.BLACK) -> None:
-        for tile in self.tiles:
+        for i, tile in enumerate(self.tiles):
             tile.glyph = 32
             tile.foreground = colors.WHITE
             tile.background = color
+            self.dirty_tiles.add(i)
 
         self.dirty = True
 
@@ -34,7 +37,6 @@ class SimpleConsole(Console):
         foreground: Color = colors.WHITE,
         background: Color = colors.BLACK,
     ) -> None:
-        changed = False
         for char in text:
             cp = to_cp437(char)
             index = self.try_index(x, y)
@@ -42,11 +44,8 @@ class SimpleConsole(Console):
                 self.tiles[index].glyph = cp
                 self.tiles[index].foreground = foreground
                 self.tiles[index].background = background
-                changed = True
+                self.dirty_tiles.add(index)
             x += 1
-
-        if changed:
-            self.dirty = True
 
     def set(
         self,
@@ -61,7 +60,7 @@ class SimpleConsole(Console):
             self.tiles[index].glyph = glyph
             self.tiles[index].foreground = foreground
             self.tiles[index].background = background
-            self.dirty = True
+            self.dirty_tiles.add(index)
 
     def index(self, x: int, y: int) -> int:
         return (self.height - 1 - y * self.width) + x
@@ -74,3 +73,6 @@ class SimpleConsole(Console):
             return self.index(x, y)
 
         return None
+
+    def clear_dirty(self) -> None:
+        self.dirty_tiles.clear()

@@ -16,7 +16,7 @@ class Console(Protocol):
     width: int
     height: int
 
-    dirty: bool
+    dirty_tiles: set[int]
 
     @abstractmethod
     def at(self, x: int, y: int) -> Tile | None:
@@ -46,4 +46,8 @@ class Console(Protocol):
         foreground: Color,
         background: Color | None = None,
     ) -> None:
+        raise NotImplementedError
+
+    @abstractmethod
+    def clear_dirty(self) -> None:
         raise NotImplementedError
