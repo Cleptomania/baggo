@@ -8,9 +8,9 @@ from level import Level
 
 SCREEN_WIDTH = 80
 SCREEN_HEIGHT = 50
-TILE_WIDTH = 8
-TILE_HEIGHT = 8
-FONT_FILE = baggo.res.TERMINAL_8X8
+TILE_WIDTH = 12
+TILE_HEIGHT = 12
+FONT_FILE = baggo.res.CP437_12X12
 
 
 class RenderProcessor(esper.Processor):

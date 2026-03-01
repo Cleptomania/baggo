@@ -5,7 +5,7 @@ SCREEN_HEIGHT = 50
 
 TILE_WIDTH = 8
 TILE_HEIGHT = 8
-FONT_FILE = baggo.res.TERMINAL_8X8
+FONT_FILE = baggo.res.CP437_8X8
 
 
 class Sandbox(baggo.App):
