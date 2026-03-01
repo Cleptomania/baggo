@@ -29,7 +29,9 @@ class Sandbox(baggo.App):
         self.down_pressed = False
 
         self.time = 0.0
-        self.tick_interval = 0.1  # Run game logic every 0.1 seconds (10 times per second)
+        self.tick_interval = (
+            0.1  # Run game logic every 0.1 seconds (10 times per second)
+        )
 
     def tick(self, delta_time: float) -> None:
         self.time += delta_time

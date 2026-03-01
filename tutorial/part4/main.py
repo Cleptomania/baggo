@@ -19,10 +19,12 @@ class RenderProcessor(esper.Processor):
 
     def process(self):
         for ent, (position, renderable) in esper.get_components(Position, Renderable):
-            self._console.set(position.x, position.y, renderable.glyph, renderable.fg, renderable.bg)
+            self._console.set(
+                position.x, position.y, renderable.glyph, renderable.fg, renderable.bg
+            )
+
 
 class GameState:
-
     player: int
     level: Level
 
@@ -31,19 +33,28 @@ class GameState:
 
         self.player = esper.create_entity()
         esper.add_component(self.player, self.level.spawn_point)
-        esper.add_component(self.player, Renderable(to_cp437("@"), baggo.colors.YELLOW, baggo.colors.BLACK))
+        esper.add_component(
+            self.player,
+            Renderable(to_cp437("@"), baggo.colors.YELLOW, baggo.colors.BLACK),
+        )
+
 
 class Game(baggo.App):
-
     def __init__(self):
-        builder = baggo.TerminalBuilder.simple(SCREEN_WIDTH, SCREEN_HEIGHT, "Baggo Tutorial", TILE_WIDTH, TILE_HEIGHT, FONT_FILE)
+        builder = baggo.TerminalBuilder.simple(
+            SCREEN_WIDTH,
+            SCREEN_HEIGHT,
+            "Baggo Tutorial",
+            TILE_WIDTH,
+            TILE_HEIGHT,
+            FONT_FILE,
+        )
         super().__init__(builder.build())
 
         self.state = GameState()
 
         render_processor = RenderProcessor(self.console)
         esper.add_processor(render_processor)
-
 
     def tick(self, delta: float) -> None:
         self.console.clear()
@@ -69,6 +80,7 @@ class Game(baggo.App):
 
 def main():
     Game().run()
+
 
 if __name__ == "__main__":
     main()

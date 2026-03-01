@@ -11,11 +11,13 @@ class Position:
     x: int
     y: int
 
+
 @dataclass
 class Renderable:
     glyph: int
     fg: baggo.Color
     bg: baggo.Color
+
 
 class RenderProcessor(esper.Processor):
     def __init__(self, console: baggo.Console):
@@ -23,33 +25,41 @@ class RenderProcessor(esper.Processor):
 
     def process(self):
         for ent, (position, renderable) in esper.get_components(Position, Renderable):
-            self._console.set(position.x, position.y, renderable.glyph, renderable.fg, renderable.bg)
+            self._console.set(
+                position.x, position.y, renderable.glyph, renderable.fg, renderable.bg
+            )
+
 
 class GameState:
-
     player: int
 
     def __init__(self):
         self.player = esper.create_entity()
         esper.add_component(self.player, Position(40, 25))
-        esper.add_component(self.player, Renderable(to_cp437("@"), baggo.colors.YELLOW, baggo.colors.BLACK))
+        esper.add_component(
+            self.player,
+            Renderable(to_cp437("@"), baggo.colors.YELLOW, baggo.colors.BLACK),
+        )
 
         for i in range(10):
             entity = esper.create_entity()
             esper.add_component(entity, Position(i * 7, 20))
-            esper.add_component(entity, Renderable(to_cp437("@"), baggo.colors.RED, baggo.colors.BLACK))
+            esper.add_component(
+                entity, Renderable(to_cp437("@"), baggo.colors.RED, baggo.colors.BLACK)
+            )
+
 
 class Game(baggo.App):
-
     def __init__(self):
-        builder = baggo.TerminalBuilder.simple(80, 50, "Baggo Tutorial", 8, 8, baggo.res.TERMINAL_8X8)
+        builder = baggo.TerminalBuilder.simple(
+            80, 50, "Baggo Tutorial", 8, 8, baggo.res.TERMINAL_8X8
+        )
         super().__init__(builder.build())
 
         self.state = GameState()
 
         render_processor = RenderProcessor(self.console)
         esper.add_processor(render_processor)
-
 
     def tick(self, delta: float) -> None:
         self.console.clear()
@@ -71,8 +81,10 @@ class Game(baggo.App):
         position.x += dx
         position.y += dy
 
+
 def main():
     Game().run()
+
 
 if __name__ == "__main__":
     main()

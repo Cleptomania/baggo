@@ -1,5 +1,4 @@
 from enum import IntEnum
-import math
 import random
 
 import baggo
@@ -8,21 +7,25 @@ from baggo import to_cp437
 from rect import Rect
 from components import Position
 
+
 class TileType(IntEnum):
     FLOOR = to_cp437(".")
     WALL = to_cp437("#")
+
 
 class LevelGenerator:
     OLD = 0
     ROOMS = 1
 
-class Level:
 
+class Level:
     width: int
     height: int
     tiles: list[TileType]
 
-    def __init__(self, width: int, height: int, generator: LevelGenerator = LevelGenerator.ROOMS):
+    def __init__(
+        self, width: int, height: int, generator: LevelGenerator = LevelGenerator.ROOMS
+    ):
         self.width = width
         self.height = height
         self.spawn_point = Position(0, 0)
@@ -45,9 +48,13 @@ class Level:
         for tile in self.tiles:
             match tile:
                 case TileType.FLOOR:
-                    console.set(x, y, TileType.FLOOR, baggo.colors.GRAY, baggo.colors.BLACK)
+                    console.set(
+                        x, y, TileType.FLOOR, baggo.colors.GRAY, baggo.colors.BLACK
+                    )
                 case TileType.WALL:
-                    console.set(x, y, TileType.WALL, baggo.colors.GREEN, baggo.colors.BLACK)
+                    console.set(
+                        x, y, TileType.WALL, baggo.colors.GREEN, baggo.colors.BLACK
+                    )
             x += 1
             if x >= self.width:
                 x = 0
@@ -73,7 +80,9 @@ class Level:
             x = random.randint(1, self.width - 1)
             y = random.randint(1, self.height - 1)
             index = self.index(x, y)
-            if index != self.index(40, 25):  # Don't put a wall where the player spawn is
+            if index != self.index(
+                40, 25
+            ):  # Don't put a wall where the player spawn is
                 self.tiles[index] = TileType.WALL
 
     def create_room(self, room: Rect) -> None:
@@ -125,13 +134,15 @@ class Level:
             # We will dug tunnels now, but we need to make sure we already have another room
             # As we can't dig tunnels from the first room, as the tunnel digging is designed to
             # connect rooms that exist.
-            if (len(rooms) > 0):
+            if len(rooms) > 0:
                 new_center = new_room.center()
                 prev_center = rooms[len(rooms) - 1].center()
 
                 # This randomization decides which room the tunnel will be centered on
                 if bool(random.getrandbits(1)):
-                    self.tunnel_horizontal(prev_center[0], new_center[0], prev_center[1])
+                    self.tunnel_horizontal(
+                        prev_center[0], new_center[0], prev_center[1]
+                    )
                     self.tunnel_vertical(prev_center[1], new_center[1], new_center[0])
                 else:
                     self.tunnel_vertical(prev_center[1], new_center[1], prev_center[0])
