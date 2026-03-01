@@ -18,16 +18,12 @@ class LevelGenerator:
     ROOMS = 1
 
 
-class Level:
-    width: int
-    height: int
+class Level(baggo.Map2D):
     tiles: list[TileType]
 
     def __init__(
         self, width: int, height: int, generator: LevelGenerator = LevelGenerator.ROOMS
     ):
-        self.width = width
-        self.height = height
         self.spawn_point = Position(0, 0)
 
         match generator:
@@ -36,8 +32,8 @@ class Level:
             case LevelGenerator.ROOMS:
                 self.generate_level_rooms()
 
-    def index(self, x: int, y: int) -> int:
-        return (y * self.width) + x
+    def is_opaque(self, x: int, y: int) -> bool:
+        return self.get_tile(x, y) == TileType.WALL
 
     def get_tile(self, x: int, y: int) -> TileType:
         return self.tiles[self.index(x, y)]

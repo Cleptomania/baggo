@@ -11,6 +11,7 @@ classifiers = [
   "License :: OSI Approved :: MIT License",
   "Operating System :: OS Independent",
   "Programming Language :: Python",
+  "Programming Language :: Rust",
   "Programming Language :: Python :: 3.14",
   "Programming Language :: Python :: Implementation :: CPython",
   "Topic :: Software Development :: Libraries :: Python Modules"
@@ -26,17 +27,17 @@ Issues = "https://github.com/Cleptomania/baggo/issues"
 
 [dependency-groups]
 dev = [
+  "maturin",
   "ruff",
   "esper"
 ]
+
+[tool.uv]
+cache-keys = [{file = "pyproject.toml"}, {file = "Cargo.toml"}, {file = "src/**/*.rs"}]
 
 [tool.uv.sources]
 arcade = { git = "https://github.com/pythonarcade/arcade", branch = "development" }
 
 [build-system]
-requires = ["uv_build"]
-build-backend = "uv_build"
-
-[tool.uv.build-backend]
-module-name = "baggo"
-module-root = ""
+requires = ["maturin>=1.12.6,<2"]
+build-backend = "maturin"

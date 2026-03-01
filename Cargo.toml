@@ -1,0 +1,11 @@
+[package]
+name = "baggo"
+version = "0.1.1"
+edition = "2024"
+
+[lib]
+name = "baggo"
+crate-type = ["cdylib"]
+
+[dependencies]
+pyo3 = { version = "0.28.2" }

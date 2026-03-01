@@ -9,4 +9,10 @@ wheels/
 # Virtual environments
 .venv
 
+# IDE stuff
 .idea
+
+# Rust Build
+target/
+*.so
+*.dll

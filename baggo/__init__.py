@@ -14,6 +14,9 @@ from .terminal import TerminalBuilder
 
 from .app import App
 
+# Native Imports From Rust Module
+from .baggo import Map2D
+
 __all__ = [
     "Color",
     "colors",
@@ -26,4 +29,7 @@ __all__ = [
     "SimpleConsole",
     "Terminal",
     "TerminalBuilder",
+
+    # Natives from Rust Module
+    "Map2D"
 ]
