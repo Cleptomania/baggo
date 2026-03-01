@@ -97,8 +97,10 @@ class Game(baggo.App):
 
     def move_player(self, dx: int, dy: int):
         position = esper.component_for_entity(self.state.player, Position)
-        position.x += dx
-        position.y += dy
+        destination_index = level_index(position.x + dx, position.y + dy)
+        if self.state.level[destination_index] != TileType.WALL:
+            position.x = min(SCREEN_WIDTH - 1, max(0, position.x + dx))
+            position.y = min(SCREEN_HEIGHT - 1, max(0, position.y + dy))
 
     def draw_level(self):
         x = 0

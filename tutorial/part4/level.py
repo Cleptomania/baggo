@@ -53,12 +53,15 @@ class Level:
                     )
                 case TileType.WALL:
                     console.set(
-                        x, y, TileType.WALL, baggo.colors.GREEN, baggo.colors.BLACK
+                        x, y, TileType.WALL, baggo.colors.SAP_GREEN, baggo.colors.BLACK
                     )
             x += 1
             if x >= self.width:
                 x = 0
                 y += 1
+
+    def moveable(self, x: int, y: int) -> bool:
+        return self.get_tile(x, y) != TileType.WALL
 
     def generate_level_old(self) -> None:
         # First populate the level with floor
