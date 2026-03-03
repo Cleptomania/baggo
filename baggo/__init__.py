@@ -15,7 +15,7 @@ from .terminal import TerminalBuilder
 from .app import App
 
 # Native Imports From Rust Module
-from .baggo import Map2D
+from .baggo import Algorithm2D, field_of_view
 
 __all__ = [
     "Color",
@@ -31,5 +31,6 @@ __all__ = [
     "TerminalBuilder",
 
     # Natives from Rust Module
-    "Map2D"
+    "Algorithm2D",
+    "field_of_view"
 ]

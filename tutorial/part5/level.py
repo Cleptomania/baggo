@@ -1,11 +1,13 @@
 from enum import IntEnum
 import random
 
+import esper
+
 import baggo
 from baggo import to_cp437
 
 from rect import Rect
-from components import Position
+from components import Position, Viewshed
 
 
 class TileType(IntEnum):
@@ -32,26 +34,33 @@ class Level(baggo.Algorithm2D):
             case LevelGenerator.ROOMS:
                 self.generate_level_rooms()
 
+    def is_opaque(self, x: int, y: int) -> bool:
+        return self.get_tile(x, y) == TileType.WALL
+
     def get_tile(self, x: int, y: int) -> TileType:
         return self.tiles[self.index(x, y)]
 
     def draw(self, console: baggo.Console):
         x = 0
         y = 0
-        for tile in self.tiles:
-            match tile:
-                case TileType.FLOOR:
-                    console.set(
-                        x, y, TileType.FLOOR, baggo.colors.GRAY, baggo.colors.BLACK
-                    )
-                case TileType.WALL:
-                    console.set(
-                        x, y, TileType.WALL, baggo.colors.SAP_GREEN, baggo.colors.BLACK
-                    )
-            x += 1
-            if x >= self.width:
-                x = 0
-                y += 1
+        # TODO: This is guaranteed to be only the player, probably need a better way to do this later
+        # That guarantee will change if we use viewshed to manage NPC fov
+        for ent, viewshed in esper.get_component(Viewshed):
+            for tile in self.tiles:
+                if (x, y) in viewshed.visible_tiles:
+                    match tile:
+                        case TileType.FLOOR:
+                            console.set(
+                                x, y, TileType.FLOOR, baggo.colors.GRAY, baggo.colors.BLACK
+                            )
+                        case TileType.WALL:
+                            console.set(
+                                x, y, TileType.WALL, baggo.colors.SAP_GREEN, baggo.colors.BLACK
+                            )
+                x += 1
+                if x >= self.width:
+                    x = 0
+                    y += 1
 
     def moveable(self, x: int, y: int) -> bool:
         return self.get_tile(x, y) != TileType.WALL

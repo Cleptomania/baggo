@@ -1,5 +1,8 @@
-mod map2d;
-pub use map2d::*;
+mod algorithm2d;
+mod recursive_shadowcasting;
+mod geometry;
+
+pub use algorithm2d::*;
 
 use pyo3::prelude::*;
 
@@ -13,5 +16,8 @@ mod baggo {
     }
 
     #[pymodule_export]
-    use super::map2d::Map2D;
+    use super::algorithm2d::Algorithm2D;
+
+    #[pymodule_export]
+    use super::recursive_shadowcasting::field_of_view;
 }
