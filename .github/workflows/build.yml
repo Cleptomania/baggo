@@ -1,4 +1,4 @@
-name: Publish
+name: Build
 
 on:
   # Called from release workflow

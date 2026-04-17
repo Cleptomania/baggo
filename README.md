@@ -6,6 +6,7 @@ There was a farmer who had a dog and baggo was his name-o. Except the farmer was
 
 1. A terminal like display and renderer for [code page 437](https://en.wikipedia.org/wiki/Code_page_437) fonts.
 2. Input Handling.
+3. FOV Helpers.
 
 ![](https://raw.githubusercontent.com/Cleptomania/baggo/main/sandbox.png)
 
