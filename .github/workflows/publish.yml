@@ -27,4 +27,4 @@ jobs:
           path: wheels
           merge-multiple: true
       - name: Publish to PyPI
-        run: uv publish 'wheels-*/*'
+        run: uv publish -v wheels/*
