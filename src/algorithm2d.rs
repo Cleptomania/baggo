@@ -6,18 +6,14 @@ pub struct Algorithm2D {
     #[pyo3(get, set)]
     pub width: i32,
     #[pyo3(get, set)]
-    pub height: i32
+    pub height: i32,
 }
 
 #[pymethods]
 impl Algorithm2D {
-
     #[new]
     fn new(width: i32, height: i32) -> Self {
-        Self {
-            width,
-            height
-        }
+        Self { width, height }
     }
 
     pub fn in_bounds(&self, x: i32, y: i32) -> bool {

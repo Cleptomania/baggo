@@ -1,0 +1,35 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release tag
+        required: true
+        default: 'dry-run'
+        type: string
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ (inputs.tag != 'dry-run' && inputs.tag) || '' }}
+      publishing: ${{ inputs.tag != 'dry-run' && inputs.tag }}
+
+  custom-build:
+    needs:
+      - plan
+    if: ${{ needs.plan.outputs.publishing == 'true' || inputs.tag == 'dry-run' }}
+    uses: ./.github/workflows/build.yml
+
+  custom-publish:
+    needs:
+      - plan
+      - custom-build
+    if: ${{ always() && needs.plan.result == 'success' && needs.plan.outputs.publishing == 'true' && needs.custom-build.result == 'success' }}
+    uses: ./.github/workflows/publish.yml
+    permissions:
+      "id-token": "write"
+      "packages": "write"
+
+  # TODO: Add GH releases maybe

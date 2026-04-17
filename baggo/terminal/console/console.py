@@ -1,6 +1,6 @@
 from abc import abstractmethod
 from dataclasses import dataclass
-from typing import Protocol
+from typing import Protocol, Set
 
 from baggo import colors, Color
 
@@ -16,7 +16,9 @@ class Console(Protocol):
     width: int
     height: int
 
-    dirty_tiles: set[int]
+    # This could actually be typed with just set[int], but type checkers get confused because there
+    # is a method called set, and they seem to think that's what's being used.
+    dirty_tiles: Set[int]
 
     @abstractmethod
     def at(self, x: int, y: int) -> Tile | None:
@@ -32,8 +34,8 @@ class Console(Protocol):
         x: int,
         y: int,
         text: str,
-        foreground: Color | None = None,
-        background: Color | None = None,
+        foreground: Color = colors.WHITE,
+        background: Color = colors.BLACK,
     ) -> None:
         raise NotImplementedError
 
@@ -43,8 +45,8 @@ class Console(Protocol):
         x: int,
         y: int,
         glyph: int,
-        foreground: Color,
-        background: Color | None = None,
+        foreground: Color = colors.WHITE,
+        background: Color = colors.BLACK,
     ) -> None:
         raise NotImplementedError
 

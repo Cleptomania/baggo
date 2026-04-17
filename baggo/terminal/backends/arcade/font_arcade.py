@@ -1,7 +1,7 @@
 from pathlib import Path
 
 import arcade
-from arcade.gl import Texture2D
+from arcade.gl import Texture2D, NEAREST
 
 from baggo.terminal import Font
 
@@ -20,7 +20,7 @@ class FontArcade(Font):
 
     def load(self) -> None:
         self._texture = arcade.get_window().ctx.load_texture(self._image_path)
-        self._texture.filter = (arcade.gl.NEAREST, arcade.gl.NEAREST)
+        self._texture.filter = (NEAREST, NEAREST)
         self._columns = self._texture.width // self._tile_width
         self._rows = self._texture.height // self._tile_height
         self._initialized = True

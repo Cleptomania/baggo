@@ -133,10 +133,7 @@ class Color(RGBA255):
         if not 0 <= a <= 255:
             raise AttributeError("a")
 
-        # Typechecking is ignored because of a mypy bug involving
-        # tuples & super:
-        # https://github.com/python/mypy/issues/8541
-        return super().__new__(cls, (r, g, b, a))  # type: ignore
+        return super().__new__(cls, (r, g, b, a))
 
     def __getnewargs__(self) -> tuple[int, int, int, int]:
         return self.r, self.g, self.b, self.a
@@ -200,7 +197,7 @@ class Color(RGBA255):
         To reorder the channels as you retrieve them, see
         :meth:`.swizzle`.
         """
-        return self[:3]
+        return self[:3]  # type: ignore ty can't figure out this slice
 
     @classmethod
     def from_iterable(cls, iterable: Iterable[int]) -> Self:

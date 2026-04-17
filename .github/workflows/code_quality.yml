@@ -15,6 +15,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
+      - name: Setup Rust
+        run: rustup update stable && rustup default stable
+
       - name: Install UV
         uses: astral-sh/setup-uv@v7
         with:
@@ -24,8 +27,17 @@ jobs:
       - name: Setup Project
         run: uv sync
 
-      - name: Ruff
-        run: uv run ruff check
+      - name: Cargo Check
+        run: cargo check
 
-      - name: Formatting
-        run: uv run ruff format --check
+      - name: Cargo Formatting
+        run: cargo fmt --check
+
+      - name: Ruff Check
+        run: uv run ruff check baggo
+
+      - name: Ruff Formatting
+        run: uv run ruff format --check baggo
+
+      - name: ty
+        run: uv run ty check baggo

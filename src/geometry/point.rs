@@ -4,26 +4,18 @@ use std::ops;
 #[derive(Eq, PartialEq, Copy, Clone, Debug, Hash)]
 pub struct Point {
     pub x: i32,
-    pub y: i32
+    pub y: i32,
 }
 
 impl Point {
-    pub fn new<T>(x: T, y: T) -> Self where T: TryInto<i32>
+    pub fn new<T>(x: T, y: T) -> Self
+    where
+        T: TryInto<i32>,
     {
         Self {
             x: x.try_into().ok().unwrap_or(0),
             y: y.try_into().ok().unwrap_or(0),
         }
-    }
-
-    pub fn zero() -> Point {
-        Point { x: 0, y: 0 }
-    }
-
-    #[inline]
-    #[must_use]
-    pub fn to_index(&self, width: i32) -> i32 {
-        (self.y * width) + self.x
     }
 }
 
@@ -31,7 +23,7 @@ impl From<(i32, i32)> for Point {
     fn from(item: (i32, i32)) -> Point {
         Point {
             x: item.0,
-            y: item.1
+            y: item.1,
         }
     }
 }
@@ -40,7 +32,7 @@ impl From<(f32, f32)> for Point {
     fn from(item: (f32, f32)) -> Point {
         Point {
             x: item.0 as i32,
-            y: item.1 as i32
+            y: item.1 as i32,
         }
     }
 }

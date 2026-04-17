@@ -1,7 +1,7 @@
 use pyo3::prelude::*;
 
-use crate::geometry::Point;
 use crate::algorithm2d::Algorithm2D;
+use crate::geometry::Point;
 use std::collections::HashSet;
 
 struct ScanFovData<'a> {
@@ -11,14 +11,19 @@ struct ScanFovData<'a> {
     fov_check: &'a Algorithm2D,
     visible_points: &'a mut HashSet<Point>,
     opaque_check: Py<PyAny>,
-    py: Python<'a>
+    py: Python<'a>,
 }
 
 #[allow(non_snake_case)]
 impl ScanFovData<'_> {
     fn is_transparent(&self, point: Point) -> bool {
         if self.fov_check.in_bounds(point.x, point.y) {
-            !self.opaque_check.call1(self.py, (point.x, point.y)).unwrap().extract::<bool>(self.py).unwrap()
+            !self
+                .opaque_check
+                .call1(self.py, (point.x, point.y))
+                .unwrap()
+                .extract::<bool>(self.py)
+                .unwrap()
         } else {
             false
         }
@@ -486,13 +491,20 @@ pub fn field_of_view_set(center: Point, range: i32, fov_check: &Algorithm2D, opa
 
 /// Calculates field-of-view for a map that supports Algorithm2D.
 #[pyfunction]
-pub fn field_of_view(py: Python, x: i32, y: i32, range: i32, fov_check: Py<PyAny>, opaque_check: Py<PyAny>) -> PyResult<Vec<(i32, i32)>> {
+pub fn field_of_view(
+    py: Python,
+    x: i32,
+    y: i32,
+    range: i32,
+    fov_check: Py<PyAny>,
+    opaque_check: Py<PyAny>,
+) -> PyResult<Vec<(i32, i32)>> {
     let algo2d: Algorithm2D = fov_check.extract::<Algorithm2D>(py)?;
     Ok(
-        field_of_view_set(Point { x, y}, range, &algo2d, opaque_check, py)
-        .into_iter()
+        field_of_view_set(Point { x, y }, range, &algo2d, opaque_check, py)
+            .into_iter()
             .filter(|p| algo2d.in_bounds(p.x, p.y))
-        .map(|p| (p.x, p.y))
-        .collect()
+            .map(|p| (p.x, p.y))
+            .collect(),
     )
 }

@@ -1,13 +1,13 @@
 mod algorithm2d;
-mod recursive_shadowcasting;
 mod geometry;
+mod recursive_shadowcasting;
 
 pub use algorithm2d::*;
 
 use pyo3::prelude::*;
 
 #[pymodule]
-mod baggo {
+mod _core {
     use pyo3::prelude::*;
 
     #[pyfunction]

@@ -1,30 +1,29 @@
-name: "Publish"
+name: Publish
 
 on:
-  push:
-    tags:
-      # Publish on any tag starting with a `v`, e.g. v1.0.0
-      - v*
+  # Called from release workflow
+  workflow_call:
+
+env:
+  PYTHON_VERSION: "3.14"
 
 jobs:
-  run:
+  pypi-publish:
+    name: Release
     runs-on: ubuntu-latest
     environment:
       name: pypi
     permissions:
       id-token: write
-      contents: read
     steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-
-      - name: Install UV
+      - name: Install uv
         uses: astral-sh/setup-uv@v7
         with:
-          python-version: "3.14"
-
-      - name: Build
-        run: uv build
-
-      - name: Publish
-        run: uv publish
+          python-version: ${{ env.PYTHON_VERSION }}
+      - uses: actions/download-artifact@v7
+        with:
+          pattern: wheels-*
+          path: wheels
+          merge-multiple: true
+      - name: Publish to PyPI
+        run: uv publish 'wheels-*/*'

@@ -16,10 +16,12 @@ game_state: GameState
 
 
 class VisibilityProcessor(esper.Processor):
-
     def process(self):
         for ent, (position, viewshed) in esper.get_components(Position, Viewshed):
-            viewshed.visible_tiles = baggo.field_of_view(position.x, position.y, 8, game_state.level, game_state.level.is_opaque)
+            viewshed.visible_tiles = baggo.field_of_view(
+                position.x, position.y, 8, game_state.level, game_state.level.is_opaque
+            )
+
 
 class RenderProcessor(esper.Processor):
     def __init__(self, console: baggo.Console):

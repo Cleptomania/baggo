@@ -51,11 +51,19 @@ class Level(baggo.Algorithm2D):
                     match tile:
                         case TileType.FLOOR:
                             console.set(
-                                x, y, TileType.FLOOR, baggo.colors.GRAY, baggo.colors.BLACK
+                                x,
+                                y,
+                                TileType.FLOOR,
+                                baggo.colors.GRAY,
+                                baggo.colors.BLACK,
                             )
                         case TileType.WALL:
                             console.set(
-                                x, y, TileType.WALL, baggo.colors.SAP_GREEN, baggo.colors.BLACK
+                                x,
+                                y,
+                                TileType.WALL,
+                                baggo.colors.SAP_GREEN,
+                                baggo.colors.BLACK,
                             )
                 x += 1
                 if x >= self.width:
