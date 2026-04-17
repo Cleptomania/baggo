@@ -15,6 +15,9 @@ jobs:
     outputs:
       tag: ${{ (inputs.tag != 'dry-run' && inputs.tag) || '' }}
       publishing: ${{ inputs.tag != 'dry-run' && inputs.tag }}
+    steps:
+      # This job is just used as kind of a linchpin for the other jobs right now
+      - run: echo skip
 
   custom-build:
     needs:
