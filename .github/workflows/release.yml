@@ -13,8 +13,7 @@ jobs:
   plan:
     runs-on: ubuntu-latest
     outputs:
-      tag: ${{ (inputs.tag != 'dry-run' && inputs.tag) || '' }}
-      publishing: ${{ inputs.tag != 'dry-run' && inputs.tag }}
+      publishing: ${{ inputs.tag && inputs.tag != 'dry-run' }}
     steps:
       # This job is just used as kind of a linchpin for the other jobs right now
       - run: echo skip
