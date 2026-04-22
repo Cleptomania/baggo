@@ -5,6 +5,8 @@ from . import res
 
 from .cp437 import to_cp437
 
+from .xp_sprite import XPSprite
+
 from .input import Keys
 
 from .terminal import Console
@@ -29,6 +31,7 @@ __all__ = [
     "SimpleConsole",
     "Terminal",
     "TerminalBuilder",
+    "XPSprite",
     # Natives from Rust Module
     "Algorithm2D",
     "field_of_view",

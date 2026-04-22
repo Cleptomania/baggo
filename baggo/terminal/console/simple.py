@@ -1,6 +1,7 @@
 from .console import Console, Tile
 
 from baggo import Color, colors, to_cp437
+from baggo.xp_sprite import TRANSPARENT_BACKGROUND, XPSprite
 
 
 class SimpleConsole(Console):
@@ -61,6 +62,22 @@ class SimpleConsole(Console):
             self.tiles[index].foreground = foreground
             self.tiles[index].background = background
             self.dirty_tiles.add(index)
+
+    def draw_xp_sprite(self, x: int, y: int, sprite: XPSprite) -> None:
+        for layer in sprite.layers:
+            for cx in range(layer.width):
+                column_offset = cx * layer.height
+                for cy in range(layer.height):
+                    cell = layer.cells[column_offset + cy]
+                    if cell.background == TRANSPARENT_BACKGROUND:
+                        continue
+                    self.set(
+                        x + cx,
+                        y + cy,
+                        cell.glyph,
+                        cell.foreground,
+                        cell.background,
+                    )
 
     def index(self, x: int, y: int) -> int:
         return (self.height - 1 - y * self.width) + x

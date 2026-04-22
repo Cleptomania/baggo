@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from typing import Protocol, Set
 
 from baggo import colors, Color
+from baggo.xp_sprite import XPSprite
 
 
 @dataclass
@@ -48,6 +49,10 @@ class Console(Protocol):
         foreground: Color = colors.WHITE,
         background: Color = colors.BLACK,
     ) -> None:
+        raise NotImplementedError
+
+    @abstractmethod
+    def draw_xp_sprite(self, x: int, y: int, sprite: XPSprite) -> None:
         raise NotImplementedError
 
     @abstractmethod
