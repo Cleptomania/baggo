@@ -1,6 +1,7 @@
 mod algorithm2d;
 mod geometry;
 mod recursive_shadowcasting;
+mod wgpu_backend;
 
 pub use algorithm2d::*;
 
@@ -20,4 +21,7 @@ mod _core {
 
     #[pymodule_export]
     use super::recursive_shadowcasting::field_of_view;
+
+    #[pymodule_export]
+    use super::wgpu_backend::WgpuTerminal;
 }

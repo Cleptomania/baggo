@@ -1,4 +1,4 @@
-from typing import Callable
+from typing import Any, Callable
 
 class Algorithm2D:
     @property
@@ -16,3 +16,17 @@ def field_of_view(
     fov_check: Algorithm2D,
     opaque_check: Callable[[int, int], bool],
 ) -> list[tuple[int, int]]: ...
+
+class WgpuTerminal:
+    def __init__(
+        self,
+        title: str,
+        pixel_width: int,
+        pixel_height: int,
+        grid_width: int,
+        grid_height: int,
+        tile_width: int,
+        tile_height: int,
+        font_image_path: str,
+    ) -> None: ...
+    def run(self, app: Any, console: Any) -> None: ...

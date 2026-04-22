@@ -16,9 +16,7 @@ classifiers = [
   "Programming Language :: Python :: Implementation :: CPython",
   "Topic :: Software Development :: Libraries :: Python Modules"
 ]
-dependencies = [
-  "arcade"
-]
+dependencies = []
 
 [project.urls]
 Homepage = "https://github.com/Cleptomania/baggo"
@@ -31,12 +29,12 @@ dev = [
   "ty",
   "esper"
 ]
+arcade = [
+  "arcade"
+]
 
 [tool.uv]
 cache-keys = [{file = "pyproject.toml"}, {file = "Cargo.toml"}, {file = "Cargo.lock"}, {file = "src/**/*.rs"}]
-
-[tool.uv.sources]
-arcade = { git = "https://github.com/pythonarcade/arcade", branch = "development" }
 
 [tool.maturin]
 module-name = "baggo._core"

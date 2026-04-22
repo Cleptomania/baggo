@@ -24,8 +24,6 @@ import random
 from collections.abc import Iterable
 from typing import Final, TypeVar
 
-from typing_extensions import Self
-
 __all__ = (
     "Color",
     "RGB",
@@ -138,7 +136,7 @@ class Color(RGBA255):
     def __getnewargs__(self) -> tuple[int, int, int, int]:
         return self.r, self.g, self.b, self.a
 
-    def __deepcopy__(self, _) -> Self:
+    def __deepcopy__(self, _) -> Color:
         """Allow :py:func:`~copy.deepcopy` to be used with Color"""
         return self.__class__(r=self.r, g=self.g, b=self.b, a=self.a)
 
@@ -200,7 +198,7 @@ class Color(RGBA255):
         return self[:3]  # type: ignore ty can't figure out this slice
 
     @classmethod
-    def from_iterable(cls, iterable: Iterable[int]) -> Self:
+    def from_iterable(cls, iterable: Iterable[int]) -> Color:
         """Create a :py:class:`Color` from an iterable of 3 or 4 channel values.
 
         If an iterable is already a :py:class:`Color` instance,
@@ -264,7 +262,7 @@ class Color(RGBA255):
         return self[0] / 255, self[1] / 255, self[2] / 255, self[3] / 255
 
     @classmethod
-    def from_gray(cls, brightness: int, a: int = 255) -> Self:
+    def from_gray(cls, brightness: int, a: int = 255) -> Color:
         """Create a gray :py:class:`Color` of the given ``brightness``.
 
         .. code-block:: python
@@ -291,7 +289,7 @@ class Color(RGBA255):
         return cls(brightness, brightness, brightness, a=a)
 
     @classmethod
-    def from_uint24(cls, color: int, a: int = 255) -> Self:
+    def from_uint24(cls, color: int, a: int = 255) -> Color:
         """Convert an unsigned 24-bit integer to a :py:class:`Color`.
 
         .. code-block:: python
@@ -327,7 +325,7 @@ class Color(RGBA255):
         return cls((color & 0xFF0000) >> 16, (color & 0xFF00) >> 8, color & 0xFF, a=a)
 
     @classmethod
-    def from_uint32(cls, color: int) -> Self:
+    def from_uint32(cls, color: int) -> Color:
         """Convert an unsigned 32-bit integer to a :py:class:`Color`.
 
         The four bytes are interpreted as R, G, B, A:
@@ -359,7 +357,7 @@ class Color(RGBA255):
         )
 
     @classmethod
-    def from_normalized(cls, color_normalized: RGBANormalized) -> Self:
+    def from_normalized(cls, color_normalized: RGBANormalized) -> Color:
         """Convert normalized float RGBA to an RGBA :py:class:`Color`.
 
         If any input channels aren't normalized (between ``0.0`` and
@@ -403,7 +401,7 @@ class Color(RGBA255):
         return cls(int(255 * r), int(255 * g), int(255 * b), a=int(255 * a))
 
     @classmethod
-    def from_hex_string(cls, code: str) -> Self:
+    def from_hex_string(cls, code: str) -> Color:
         """Create a :py:class:`Color` from a hex code of 3, 4, 6, or 8 digits.
 
         .. code-block:: python
@@ -476,7 +474,7 @@ class Color(RGBA255):
         g: int | None = None,
         b: int | None = None,
         a: int | None = None,
-    ) -> Self:
+    ) -> Color:
         """Create a :py:class:`Color` by randomizing all unspecified channels.
 
         All arguments are optional. If you specify a channel's value, it

@@ -10,9 +10,10 @@ class TerminalBackends(Enum):
     ARCADE = 1
     PYGLET = 2
     PYGAME = 3
+    WGPU = 4
 
 
-DEFAULT_TERMINAL_BACKEND = TerminalBackends.ARCADE
+DEFAULT_TERMINAL_BACKEND = TerminalBackends.WGPU
 
 
 class TerminalBuilder:
@@ -60,6 +61,10 @@ class TerminalBuilder:
                 from .backends.arcade import FontArcade
 
                 return FontArcade(tile_width, tile_height, font_file)
+            case TerminalBackends.WGPU:
+                from .backends.wgpu import FontWgpu
+
+                return FontWgpu(tile_width, tile_height, font_file)
 
         raise RuntimeError(f"Unable to create font for current backend {backend.name}")
 
@@ -70,6 +75,17 @@ class TerminalBuilder:
 
                 assert isinstance(self.font, FontArcade)
                 return TerminalArcade(
+                    self.width * self.font.tile_width,
+                    self.height * self.font.tile_height,
+                    self.title,
+                    self.console,
+                    self.font,
+                )
+            case TerminalBackends.WGPU:
+                from .backends.wgpu import FontWgpu, TerminalWgpu
+
+                assert isinstance(self.font, FontWgpu)
+                return TerminalWgpu(
                     self.width * self.font.tile_width,
                     self.height * self.font.tile_height,
                     self.title,

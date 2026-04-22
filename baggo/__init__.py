@@ -12,6 +12,7 @@ from .input import Keys
 from .terminal import Console
 from .terminal import SimpleConsole
 from .terminal import Terminal
+from .terminal import TerminalBackends
 from .terminal import TerminalBuilder
 
 from .app import App
@@ -30,6 +31,7 @@ __all__ = [
     "Console",
     "SimpleConsole",
     "Terminal",
+    "TerminalBackends",
     "TerminalBuilder",
     "XPSprite",
     # Natives from Rust Module
